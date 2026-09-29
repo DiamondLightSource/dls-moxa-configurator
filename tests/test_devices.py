@@ -17,8 +17,11 @@ def test_bundled_devices():
     devices = load_devices()
     assert VACUUM <= set(devices)
     assert {devices[n].category for n in VACUUM} == {"Vacuum"}
-    # every bundled device is filed under a real category
-    assert OTHER not in {d.category for d in devices.values()}
+    uncategorised = sorted(d.name for d in devices.values() if d.category == OTHER)
+    assert not uncategorised, (
+        f'add a category = "..." line to {", ".join(uncategorised)} in '
+        "devices.toml (bundled devices must not fall under Other)"
+    )
 
 
 @pytest.mark.parametrize(

@@ -25,6 +25,19 @@ DATA = Path(__file__).parent / "data"
 DEVICES = load_devices()
 PASSWORDS = {"User Pass #1", "Console Password"}
 
+# A fixed library for the tests that infer devices from a unit's export, so a
+# bundled device added later with the same settings as one of these can't make
+# the match ambiguous. Two 9600 8N1 devices make that setting ambiguous here.
+INFER_LIBRARY = {
+    d.name: d
+    for d in [
+        Device("MKS937A", parity="even"),
+        Device("MKS937B"),
+        Device("DigitelMPC"),
+        Device("MicronixMDD", baud=38400, interface="rs485-2w", fifo=False),
+    ]
+}
+
 # fixture -> {port: device}, from the SR-BUILDER XML. SR10C ports 5-6 are
 # declared with digitelMpcq.proto but are really MPCe (so DigitelMPC).
 # MPC ports in cells 5-7, 10 and 13-18 are set to 8E1 on the units, not the
@@ -203,12 +216,12 @@ def test_unit_export_without_record_infers():
     from the serial settings; 9600 8N1 is ambiguous."""
     real = NPortIni.load(DATA / "sr04c_8026.ini")
     assert read_record(real) == {}
-    restored, notes = read_settings(real, DEVICES)
+    restored, notes = read_settings(real, INFER_LIBRARY)
     assert restored.name == "SR04C-VA-TSERV-01"
     assert restored.ip == "192.168.4.11"
     assert restored.gateway == ""
     ch = restored.channels
-    assert ch[1].device == DEVICES["MKS937A"]  # 9600 8E1 is unique
+    assert ch[1].device == INFER_LIBRARY["MKS937A"]  # 9600 8E1 is unique
     assert ch[1].alias == "GCTLR_A_01"
     assert ch[0].device is not None and ch[0].device.name == CUSTOM_NAME
     assert ch[15].device is None
@@ -233,5 +246,6 @@ def test_rs485_device_matches_real_unit():
 
 
 def test_unit_export_rs485_port_opens_as_micronix():
-    restored, _ = read_settings(NPortIni.load(DATA / "interface_example.ini"), DEVICES)
-    assert restored.channels[4].device == DEVICES["MicronixMDD"]
+    real = NPortIni.load(DATA / "interface_example.ini")
+    restored, _ = read_settings(real, INFER_LIBRARY)
+    assert restored.channels[4].device == INFER_LIBRARY["MicronixMDD"]
