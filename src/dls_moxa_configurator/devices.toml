@@ -1,0 +1,82 @@
+# Devices that can be selected for a terminal-server channel.
+#
+# To add a device, copy a [[device]] block and change it. Keys:
+#   name          shown in the channel drop-down (must be unique)
+#   category      drop-down heading, e.g. "Vacuum" (default "Other")
+#   description   tooltip text
+#   baud          50 ... 921600 (standard rates only)
+#   data_bits     5, 6, 7 or 8                     (default 8)
+#   parity        "none", "odd", "even", "mark", "space"  (default "none")
+#   stop_bits     1 or 2                           (default 1)
+#   flow_control  "none", "rts/cts", "xon/xoff", "dtr/dsr"  (default "none")
+#   interface     "rs232", "rs422", "rs485-2w", "rs485-4w"  (default "rs232")
+#   fifo          true or false: UART FIFO enabled  (default true)
+#
+# You can also keep extra devices in your own file and load it with
+#   dls-moxa-configurator --devices my_devices.toml
+# A device there replaces a bundled one with the same name.
+#
+# The entries below are taken from the SR vacuum terminal servers
+# (SR-BUILDER IOC XML + the units' exported configs).
+
+[[device]]
+name = "MKS937A"
+category = "Vacuum"
+description = "MKS 937A gauge controller"
+baud = 9600
+parity = "even"
+
+[[device]]
+name = "MKS937B"
+category = "Vacuum"
+description = "MKS 937B gauge controller"
+baud = 9600
+
+[[device]]
+# 9600 8N1 fixed (only baud is selectable): Digitel MPC manual 500000 Rev J
+# and MPCe manual 900015 Rev B. Some SR units have these ports at 8E1; that
+# is a misconfiguration that happens to work (the controller ignores parity).
+name = "DigitelMPC"
+category = "Vacuum"
+description = "Gamma Digitel MPC (incl. MPC2, MPCe & MPCq ) ion pump controller"
+baud = 9600
+
+[[device]]
+name = "DigitelQPC"
+category = "Vacuum"
+description = "Gamma Digitel QPC ion pump controller"
+baud = 9600
+
+[[device]]
+name = "rgaPC"
+category = "Vacuum"
+description = "Residual gas analyser PC (rga.rga)"
+baud = 38400
+
+[[device]]
+name = "enzLoCuM4"
+category = "Diagnostics"
+description = "enzLoCuM4 Low current monitor"
+baud = 9600
+
+[[device]]
+name = "D2AFE"
+category = "Diagnostics"
+description = "Diamond II analog front end"
+baud = 115200
+interface = "rs485-2w"
+fifo = false
+
+[[device]]
+name = "Geobrick"
+category = "Motion Control"
+description = "Delta Tau Geobrick"
+baud = 38400
+
+[[device]]
+name = "MicronixMDD"
+category = "Motion Control"
+description = "MicronixMDD Piezo Controller"
+baud = 38400
+interface = "rs485-2w"
+fifo = false
