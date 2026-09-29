@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: dls-moxa-configurator
+  title: dls-moxa-configurator
+  description: GUI tool to create a pre-configured moxa ini file
+spec:
+  type: application
+  lifecycle: experimental
+  owner: 
