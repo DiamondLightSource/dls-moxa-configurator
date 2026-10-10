@@ -16,7 +16,7 @@ description = "GUI tool to create a pre-configured moxa ini file"
 # PySide6-Essentials: the GUI only uses QtCore/QtGui/QtWidgets, so we skip the
 # ~270 MB of Addons the full PySide6 pulls in.
 # <6.10: last series with manylinux_2_28 wheels (RHEL 8 workstations)
-dependencies = ["PySide6-Essentials<6.10", "typer"]
+dependencies = ["PySide6-Essentials<6.13", "typer"]
 dynamic = ["version"]
 license.file = "LICENSE"
 readme = "README.md"
