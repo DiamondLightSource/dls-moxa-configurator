@@ -43,9 +43,15 @@ GitHub = "https://github.com/DiamondLightSource/dls-moxa-configurator"
 email = "lee.hudson@diamond.ac.uk"
 name = "Lee Hudson"
 
+<<<<<<< before updating
 [tool.setuptools.package-data]
 # The device library and ini template are read at runtime via importlib.resources
 dls_moxa_configurator = ["devices.toml", "templates/*.ini"]
+=======
+[tool.uv]
+# Minimum uv to fix eMudhra CA cert incident (see discuss.python.org/t/109576)
+required-version = ">=0.13.5"
+>>>>>>> after updating
 
 [tool.setuptools_scm]
 version_file = "src/dls_moxa_configurator/_version.py"
